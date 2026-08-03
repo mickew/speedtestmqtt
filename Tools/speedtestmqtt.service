@@ -1,0 +1,14 @@
+[Unit]
+Description=MQTT Speedtest Client systemd demon
+
+[Service]
+WorkingDirectory=/usr/local/bin/speedtestmqtt
+ExecStart=/usr/local/bin/speedtestmqtt/SpeedtestMQTT
+Restart=always
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=speedtestmqtt
+Environment=NETCORE_ENVIRONMENT=Production
+
+[Install]
+WantedBy=multi-user.target
