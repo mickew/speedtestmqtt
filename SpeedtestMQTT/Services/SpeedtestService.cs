@@ -48,13 +48,13 @@ internal class SpeedtestService : ISpeedtestService
 
             // Stream reading to handle potential memory constraints on low-RAM Pis
             string jsonOutput = process.StandardOutput.ReadToEnd();
-            string errorOutput = process.StandardError.ReadToEnd();
+            //string errorOutput = process.StandardError.ReadToEnd();
             
             await process.WaitForExitAsync(cancellationToken);
 
             if (process.ExitCode != 0)
             {
-                _logger.LogError("[CLI Error]: {ErrorOutput}", errorOutput);
+                _logger.LogError("[CLI Error]: {ErrorOutput}", "errorOutput");
                 return null;
             }
 
