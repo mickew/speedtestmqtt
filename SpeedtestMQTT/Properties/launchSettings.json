@@ -3,7 +3,7 @@
     "SpeedtestMQTT": {
       "commandName": "Project",
       "environmentVariables": {
-        "DOTNET_ENVIRONMENT": "Development"
+        "NETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true
     },
