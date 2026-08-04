@@ -27,6 +27,8 @@ internal class SpeedtestService : ISpeedtestService
         {
             speedtestPath = Path.Combine(Directory.GetCurrentDirectory(), "clis", "speedtest");
         }
+        _logger.LogInformation("Using speedtest CLI at: {SpeedtestPath}", speedtestPath);
+
         var startInfo = new ProcessStartInfo
         {
             FileName = speedtestPath,
@@ -40,6 +42,7 @@ internal class SpeedtestService : ISpeedtestService
 
         try
         {
+            _logger.LogInformation("Starting speedtest process...{StartInfo}", startInfo);
             using var process = Process.Start(startInfo);
             if (process == null) return null;
 
@@ -56,7 +59,7 @@ internal class SpeedtestService : ISpeedtestService
             }
 
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            return JsonSerializer.Deserialize<SpeedtestResult>(jsonOutput, options);
+            return await JsonSerializer.DeserializeAsync<SpeedtestResult>(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(jsonOutput)), options, cancellationToken);
         }
         catch (Exception ex)
         {
