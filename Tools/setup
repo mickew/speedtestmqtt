@@ -5,13 +5,13 @@ BASEDIR=${PWD}
 application_name="Speedtest MQTT Client"
 app_dir="speedtestmqtt"
 install_dir="/usr/local/bin/$app_dir"
-app="telldusmqtt"
+app="speedtestmqtt"
 
-service="telldusmqtt.service"
-serviceurl="https://raw.githubusercontent.com/mickew/telldusmqtt/main/Tools/$service"
+service="speedtestmqtt.service"
+serviceurl="https://raw.githubusercontent.com/mickew/speedtestmqtt/main/Tools/$service"
 
-latesturl="https://github.com/mickew/telldusmqtt/releases/latest"
-rooturl="https://github.com/mickew/telldusmqtt/releases/download"
+latesturl="https://github.com/mickew/speedtestmqtt/releases/latest"
+rooturl="https://github.com/mickew/speedtestmqtt/releases/download"
 filename="release.zip"
 out="latest"
 JSON_FMT='{\"MQTT\": {\"Server\": \"%s\" }}\n'
