@@ -49,7 +49,7 @@ function install {
             getlatest
             sudo sh -c "printf \"$JSON_FMT\" \"$MQTTSERVER\" > /usr/local/bin/$app_dir/appsettings.Production.json"
             chmod +x $install_dir/$app
-            chmod +x $install_dir/clis/speedtest
+            chmod +x "$install_dir/clis/speedtest"
             if [[ $service != "" ]]; then
                 systemctl enable $service
                 systemctl start $service
@@ -87,7 +87,7 @@ function update {
         systemctl stop $service
         getlatest
         chmod +x $install_dir/$app
-        chmod +x $install_dir/clis/speedtest
+        chmod +x "$install_dir/clis/speedtest"
         systemctl start $service
         whiptail --title "Update complete" --msgbox "$application_name update complete." 8 78
         exit
