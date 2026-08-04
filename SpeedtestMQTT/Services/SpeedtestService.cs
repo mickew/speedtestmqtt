@@ -44,8 +44,8 @@ internal class SpeedtestService : ISpeedtestService
             if (process == null) return null;
 
             // Stream reading to handle potential memory constraints on low-RAM Pis
-            string jsonOutput = await process.StandardOutput.ReadToEndAsync();
-            string errorOutput = await process.StandardError.ReadToEndAsync();
+            string jsonOutput = process.StandardOutput.ReadToEnd();
+            string errorOutput = process.StandardError.ReadToEnd();
             
             await process.WaitForExitAsync(cancellationToken);
 
