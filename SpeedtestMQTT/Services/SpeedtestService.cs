@@ -98,10 +98,10 @@ internal class SpeedtestService : ISpeedtestService
             process.StartInfo = startInfo;
 
             process.Start();
-            while (!process.StandardOutput.EndOfStream)
-            {
-                sb.AppendLine(process.StandardOutput.ReadLine()!);
-            }
+            //while (!process.StandardOutput.EndOfStream)
+            //{
+            //    sb.AppendLine(process.StandardOutput.ReadLine()!);
+            //}
             jsonOutput = sb.ToString();
 
             process.WaitForExit(TimeSpan.FromSeconds(60.0)); // Wait for a maximum of 60 seconds
