@@ -72,9 +72,12 @@ internal class SpeedtestService : ISpeedtestService
     private Task<SpeedtestResult?> RunRaspberryPiSpeedtestAsync(CancellationToken cancellationToken = default)
     {
         string speedtestPath = Path.Combine(Directory.GetCurrentDirectory(), "clis", "speedtest.exe");
+        string arguments = "--format=json --accept-license --accept-gdpr";
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
             speedtestPath = Path.Combine(Directory.GetCurrentDirectory(), "clis", "speedtest");
+            arguments = $"-c \"{speedtestPath} --format=json --accept-license --accept-gdpr\"";
+            speedtestPath = "/bin/bash"; // Use bash to execute the speedtest binary on Linux
         }
         _logger.LogInformation("Using speedtest CLI at: {SpeedtestPath}", speedtestPath);
 
@@ -83,7 +86,7 @@ internal class SpeedtestService : ISpeedtestService
         {
             FileName = speedtestPath,
             // --accept-license & --accept-gdpr are REQUIRED for automated scripts on headless Pis
-            Arguments = "--format=json --accept-license --accept-gdpr",
+            Arguments = arguments,
             //RedirectStandardOutput = true,
             //RedirectStandardError = true,
             UseShellExecute = false,
