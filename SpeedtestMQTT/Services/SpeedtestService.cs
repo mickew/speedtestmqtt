@@ -84,7 +84,7 @@ internal class SpeedtestService : ISpeedtestService
             FileName = speedtestPath,
             // --accept-license & --accept-gdpr are REQUIRED for automated scripts on headless Pis
             Arguments = "--format=json --accept-license --accept-gdpr",
-            RedirectStandardOutput = true,
+            //RedirectStandardOutput = true,
             //RedirectStandardError = true,
             UseShellExecute = false,
             CreateNoWindow = true
