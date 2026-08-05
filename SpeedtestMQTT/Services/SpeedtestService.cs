@@ -85,7 +85,7 @@ internal class SpeedtestService : ISpeedtestService
             // --accept-license & --accept-gdpr are REQUIRED for automated scripts on headless Pis
             Arguments = "--format=json --accept-license --accept-gdpr",
             RedirectStandardOutput = true,
-            RedirectStandardError = true,
+            //RedirectStandardError = true,
             UseShellExecute = false,
             CreateNoWindow = true
         };
