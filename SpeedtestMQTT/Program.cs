@@ -51,6 +51,8 @@ builder.Services.AddSerilog((services, configuration) =>
 });
 
 builder.Services.AddSingleton<ISpeedtestService, SpeedtestService>();
+builder.Services.AddSingleton<IMqttClientService, MqttClientService>();
+builder.Services.AddHostedService(serviceProvider => (IMqttClientService)serviceProvider.GetRequiredService<IMqttClientService>());
 
 builder.Services.AddQuartz(options =>
 {
