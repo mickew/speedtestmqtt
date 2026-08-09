@@ -41,6 +41,12 @@ internal class SpeedtestService : ISpeedtestService
             CreateNoWindow = true
         };
 
+        // Fix for Systemd environment execution:
+        // Define an explicit Home & Temp path so the C++ binary can write config files
+        string tempPath = Path.GetTempPath(); // Defaults to /tmp on Linux
+        startInfo.EnvironmentVariables["HOME"] = tempPath;
+        startInfo.EnvironmentVariables["TMPDIR"] = tempPath;
+
         try
         {
             _logger.LogInformation("Starting speedtest process...{StartInfo}", startInfo);
@@ -69,68 +75,4 @@ internal class SpeedtestService : ISpeedtestService
         }
     }
 
-    //private Task<SpeedtestResult?> RunRaspberryPiSpeedtestAsync(CancellationToken cancellationToken = default)
-    //{
-    //    string speedtestPath = Path.Combine(Directory.GetCurrentDirectory(), "clis", "speedtest.exe");
-    //    string arguments = "--format=json --accept-license --accept-gdpr";
-    //    if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-    //    {
-    //        speedtestPath = Path.Combine(Directory.GetCurrentDirectory(), "clis", "speedtest");
-    //        arguments = $"-c \"{speedtestPath} --format=json --accept-license --accept-gdpr\"";
-    //        speedtestPath = "/bin/bash"; // Use bash to execute the speedtest binary on Linux
-    //    }
-    //    _logger.LogInformation("Using speedtest CLI at: {SpeedtestPath}", speedtestPath);
-
-    //    Process? process = null;
-    //    var startInfo = new ProcessStartInfo
-    //    {
-    //        FileName = speedtestPath,
-    //        // --accept-license & --accept-gdpr are REQUIRED for automated scripts on headless Pis
-    //        Arguments = arguments,
-    //        //RedirectStandardOutput = true,
-    //        //RedirectStandardError = true,
-    //        UseShellExecute = false,
-    //        CreateNoWindow = true
-    //    };
-
-    //    try
-    //    {
-    //        string jsonOutput = string.Empty;
-    //        StringBuilder sb = new StringBuilder();
-    //        process = new Process();
-    //        process.StartInfo = startInfo;
-
-    //        process.Start();
-    //        //while (!process.StandardOutput.EndOfStream)
-    //        //{
-    //        //    sb.AppendLine(process.StandardOutput.ReadLine()!);
-    //        //}
-    //        jsonOutput = sb.ToString();
-
-    //        process.WaitForExit(TimeSpan.FromSeconds(60.0)); // Wait for a maximum of 60 seconds
-
-    //        if (process.ExitCode != 0)
-    //        {
-    //            _logger.LogError("[CLI Error]: Speedtest CLI exited with code {ExitCode}. Error Output: {ErrorOutput}", process.ExitCode, "errorOutput");
-    //            return Task.FromResult<SpeedtestResult?>(null);
-    //        }
-
-    //        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-    //        return Task.FromResult(JsonSerializer.Deserialize<SpeedtestResult>(jsonOutput, options));
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        _logger.LogError(ex, "[Execution Failed]: {Message}", ex.Message);
-    //        return Task.FromResult<SpeedtestResult?>(null);
-    //    }
-    //    finally
-    //    {
-    //        // Ensure the process is cleaned up
-    //        if (process != null && !process.HasExited)
-    //        {
-    //            process.Kill();
-    //            process.Dispose();
-    //        }
-    //    }
-    //}
 }
