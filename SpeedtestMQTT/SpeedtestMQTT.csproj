@@ -37,12 +37,12 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+  <!--<ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
     <None Update="clis/speedtest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="clis/speedtest.5">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
+  </ItemGroup>-->
 </Project>

@@ -8,6 +8,13 @@
 
 ## Speedtest MQTT server
 
+### Install Speedtest CLI
+```
+sudo apt-get install curl
+curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
+sudo apt-get install speedtest
+```
+
 ### Install, update and uninstall Speedtest MQTT
 
 ```bash
