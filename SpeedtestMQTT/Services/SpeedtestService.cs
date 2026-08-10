@@ -23,6 +23,16 @@ internal class SpeedtestService : ISpeedtestService
 
     private async Task<SpeedtestResult?> RunRaspberryPiSpeedtestAsync(CancellationToken cancellationToken = default)
     {
+        string appTempDir = Path.Combine(Path.GetTempPath(), "speedtest_app");
+        try
+        {
+            Directory.CreateDirectory(appTempDir);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Couldn't create {AppTempDir}: {Message}", appTempDir, ex.Message);
+        }
+
         string speedtestPath = Path.Combine(Directory.GetCurrentDirectory(), "clis", "speedtest.exe");
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
@@ -43,13 +53,12 @@ internal class SpeedtestService : ISpeedtestService
 
         // Fix for Systemd environment execution:
         // Define an explicit Home & Temp path so the C++ binary can write config files
-        string tempPath = Path.GetTempPath(); // Defaults to /tmp on Linux
-        startInfo.EnvironmentVariables["HOME"] = tempPath;
-        startInfo.EnvironmentVariables["TMPDIR"] = tempPath;
+        startInfo.EnvironmentVariables["HOME"] = appTempDir;
+        startInfo.EnvironmentVariables["TMPDIR"] = appTempDir;
 
         try
         {
-            _logger.LogInformation("Starting speedtest process...{StartInfo}", startInfo);
+            _logger.LogInformation("Starting speedtest process...{StartInfo}", startInfo.FileName);
             using var process = Process.Start(startInfo);
             if (process == null) return null;
 

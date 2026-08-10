@@ -2,6 +2,9 @@
 Description=MQTT Speedtest Client systemd demon
 
 [Service]
+User=askholmen
+ReadWritePaths=/tmp
+ProtectHome=false
 WorkingDirectory=/usr/local/bin/speedtestmqtt
 ExecStart=/usr/local/bin/speedtestmqtt/SpeedtestMQTT
 Restart=always

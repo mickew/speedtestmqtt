@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Globalization;
+using System.Reflection;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MQTTnet;
@@ -32,10 +34,24 @@ internal class MqttClientService : IMqttClientService
     {
         MqttClientPublishResult? result = null;
 
-        result = await _mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
-            .WithTopic($"{_mqttSettings.Value.Topic}/{_mqttSettings.Value.ClientId}/status")
-            .WithPayload(JsonSerializer.Serialize(speedTest))
-            .Build());
+        PropertyInfo[] properties = speedTest.GetType().GetProperties();
+
+
+        foreach (PropertyInfo propertyInfo in properties)
+        {
+            string propertyName = propertyInfo.Name;
+            object? propertyValue = propertyInfo.GetValue(speedTest);
+            var payload = propertyValue?.ToString() ?? string.Empty;
+            if (propertyValue is double d)
+            {
+                payload = d.ToString("F2", CultureInfo.InvariantCulture);
+            }
+
+            result = await _mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+                .WithTopic($"{_mqttSettings.Value.Topic}/{_mqttSettings.Value.ClientId}/status/{propertyName}")
+                .WithPayload(payload)
+                .Build());
+        }
 
         if (result == null || !result.IsSuccess)
         {
